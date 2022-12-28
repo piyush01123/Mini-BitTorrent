@@ -1,55 +1,27 @@
 
-# Toy ChatServer
-
-<p align="center">
-<img src="images/groupchat.png" width="100" >
-</p>
-
-This is a toy chat server. To use, just [dowload](https://github.com/piyush01123/Toy-ChatServer/releases/tag/binaries) and run the binaries as per your OS (Tested on MacOS and Ubuntu).
-
-**Main ideas:** Multi-threading, Socket programming
-
+# Mini BitTorrent
 
 ## Compilation
+For Ubuntu you can skip the following steps as you already have the OpenSSL pre-install and configured to use with `gcc`
 
-To compile on Linux machines:
+#### For MacOS
+If you do not have OpenSSL installed you will need to install it:
 ```
-g++ tracker.cpp -lpthread -o Tracker.linux
-g++ client.cpp -lpthread -o Client.linux
-```
-
-To compile on MacOS:
-```
-g++ -std=c++17 tracker.cpp -lpthread -o Tracker.mac
-g++ -std=c++17 client.cpp -lpthread -o Client.mac
+brew install openssl
 ```
 
-## Use this software
-This runs on a client-server model. There should be just 1 tracker whereas there can be several clients. The machine running the tracker can be a client too. The client can join and leave as they wish. Just like whatsapp, a new client will be able to view messages in the group from the point she joins.
-
-Run tracker:
+We also need to create symbolic links for the OpenSSL header files and the binaries so that `gcc` can find them.
 ```
-./Tracker.linux
-```
-
-Run client with tracker's IP address as argument (must be on same network or else you will have to use a proxyserver):
-```
-./Client.linux $tracker_ip
+ln -s /usr/local/opt/openssl\@1.1/include/openssl /usr/local/include/
+ln -s /usr/local/opt/openssl\@1.1/lib/* /usr/local/lib/
+ln -s /usr/local/opt/openssl\@1.1/bin/* /usr/local/bin/
 ```
 
-## Snapshots
-#### View from client 1 (alpha):
+You can check that you have everything working correctly by running a [test](src/shatest.cpp). 
+```
+g++ shatest.cpp -lssl -lcrypto -o Test
+./Test
+```
+This should return the string `0a4d55a8d778e5022fab701977c5d840bbc486d0` which is the SHA1 digest of the string "Hello World".
 
-<img src="images/alpha.png" >
 
-#### View from client 2 (beta):
-
-<img src="images/beta.png" >
-
-#### View from client 3 (gamma):
-
-<img src="images/gamma.png" >
-
-#### View from tracker:
-
-<img src="images/tracker.png" >
